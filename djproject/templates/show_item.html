@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<body>
+    <h1>{{html_title}}</h1>
+
+    {% if items %}
+    <ul>
+        
+             <li>id : {{items.id}}</li>
+             <li>title : {{items.title}}</li>
+             <li>describtion:{{items.describtion}}</li>
+    </br>
+        
+    </ul>
+    {%else%}
+       <h1> No data found</h1>
+
+    {% endif %}
+    
+</body>
+</html>
