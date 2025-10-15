@@ -6,6 +6,7 @@
 <title>{{ html_title }}</title>
 </head>
 <body>
+<<<<<<< HEAD
     <h1>{{ html_title }}</h1>
     
     {% if date %}
@@ -20,6 +21,21 @@
     </ul>
     {% else %}
         <h2>No data found</h2>
+=======
+    <h1>{{html_title}}</h1>
+    {% if data %}
+    <ul>
+        {% for items in data %}
+             <li>id : {{items.id}}</li>
+             <li>title : {{items.title}}</li>
+             <li>describtion:{{items.describtion}}</li>
+    </br>
+        {% endfor %}
+    </ul>
+     {% else %}
+       <h1> No data found </h1>
+
+>>>>>>> e04c224e6da6ff2fe8b263b1c503f2d42e878f03
     {% endif %}
 <!--Specifies a variable to use in the block-->
     {% with firstname="Stalikken" %}
