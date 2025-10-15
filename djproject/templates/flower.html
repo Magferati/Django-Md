@@ -7,17 +7,17 @@
 </head>
 <body>
     <h1>{{html_title}}</h1>
-    {% if data%}
+    {% if data %}
     <ul>
-        {%for items in date %}
+        {% for items in data %}
              <li>id : {{items.id}}</li>
              <li>title : {{items.title}}</li>
              <li>describtion:{{items.describtion}}</li>
     </br>
         {% endfor %}
     </ul>
-     {%else%}
-       <h1> No data found</h1>
+     {% else %}
+       <h1> No data found </h1>
 
     {% endif %}
     

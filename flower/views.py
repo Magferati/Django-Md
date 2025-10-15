@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 from django.http import HttpResponse
 from .models import Daisy
 # Create your views here.
@@ -9,16 +9,16 @@ def flower1(request):
 def get_all(request):
     print('request', request)
     
-    flower_list = Daisy.objects.all().order_by("title")
+    flower_list = Daisy.objects.all().order_by("-title")
     if flower_list:
         context = {
-            "date": flower_list,
+            "data": flower_list,
             "html_title": "....This is my page...."
         }
         return render(request, "flower.html", context)
     
     else:
-        return HttpResponse(f"Not available data")
+        return HttpResponse(f"No data found")
     
 def get_data_by_id(request, id):
     print(request,"request")
@@ -31,17 +31,32 @@ def get_data_by_id(request, id):
         }
         return render(request, "show_item.html", context)
     
-def create(request):
-    Daisy.objects.create()
+def create (request):
+   
+   if request.method == "POST":
+   
+        title = request.POST.get("title")
+        describtion = request.POST.get("describtion")
+
+        print(title, describtion)
+        data =Daisy(title=title, describtion=describtion)
+        data.save()
+        print("data is save successfully")
+        #Daisy.objects.create(title=title,describtion=describtion)
+        return redirect("get-all")
+   return render (request, "add_item.html")
+   
 
 def update(request, id, title, describtion):
-    a = Daisy.objects.ger(id=id)
+    
+    daisy= Daisy.objects.ger(id=id)
 
-    a.title = title
-    a.discribtion = describtion
-    a.save()
+    daisy.title = title
+    daisy.discribtion = describtion
+    daisy.save()
 
-    return HttpResponse(f"{a.title} and {a.discribtion} updated")
+    return HttpResponse(f"{daisy.title} and {daisy.discribtion} updated")
+
 def delete(request, id):
     a = Daisy.objects.get(id=id)
     a.delete()
