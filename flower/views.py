@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Daisy
 # Create your views here.
@@ -9,7 +9,8 @@ def flower1(request):
 def get_all(request):
     print('request', request)
     
-    flower_list = Daisy.objects.all().order_by("title")
+    flower_list = Daisy.objects.all().order_by("create_at")
+    print(f"-------**{flower_list}------**")
     if flower_list:
         context = {
             "date": flower_list,
@@ -18,10 +19,10 @@ def get_all(request):
         return render(request, "flower.html", context)
     
     else:
-        return HttpResponse(f"Not available data")
+        return HttpResponse(f"No data found")
     
 def get_data_by_id(request, id):
-    print(request,"request")
+    print("request",request)
 
     flower_list = Daisy.objects.get(id=id)
     if flower_list:
@@ -31,18 +32,42 @@ def get_data_by_id(request, id):
         }
         return render(request, "show_item.html", context)
     
-def create(request):
-    Daisy.objects.create()
+def create (request):
+   
+   if request.method == "POST":
+   
+        title = request.POST.get("title")
+        des = request.POST.get("description")
 
-def update(request, id, title, describtion):
-    a = Daisy.objects.ger(id=id)
+        print(title, des)
+        data = Daisy(title=title, description=des)
+        data.save()
+        print("data is save successfully")
+        #Daisy.objects.create(title=title,describtion=describtion)
+        return redirect("get-all")
+   return render (request, "add_items.html")
 
-    a.title = title
-    a.discribtion = describtion
-    a.save()
 
-    return HttpResponse(f"{a.title} and {a.discribtion} updated")
-def delete(request, id):
+def update(request, id):
+    daisy = Daisy.objects.get(id=id)
+    if request.method == "POST":
+        title = request.POST.get("title")
+        des = request.POST.get("description")
+
+        daisy.title = title
+        daisy.description = des
+        daisy.save()
+        return redirect("get-all")
+    context = {
+        "id" : daisy.id,
+        "title": daisy.title,
+        "description":daisy.description
+    }
+
+    return render(request, "edit_items.html", context)
+
+
+def delete(request, id):   
     a = Daisy.objects.get(id=id)
     a.delete()
     return HttpResponse(f"{id} was delete successfully")

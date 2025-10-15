@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add new items</title>
+</head>
+<body>
+    <h1>add items</h1>
+    <form action ="{% url 'add-items' %}" method="post">
+        {% csrf_token %}
+
+        <label  for ="title">title</label></br>
+        <input type="text" id="title" name="title"></br>
+     </br>
+        <label  for ="description">description</label></br>
+        <textarea name="description" id="description"></textarea></br>
+        </br>
+        <button type="submit">submit</button>
+    </form>
+
+
+
+
+</body>
+    </html>

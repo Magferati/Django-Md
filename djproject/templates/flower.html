@@ -3,23 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+<title>{{ html_title }}</title>
 </head>
 <body>
-    <h1>{{html_title}}</h1>
-    {% if data%}
+    <h1>{{ html_title }}</h1>
+    
+    {% if date %}
     <ul>
-        {%for items in date %}
-             <li>id : {{items.id}}</li>
-             <li>title : {{items.title}}</li>
-             <li>describtion:{{items.describtion}}</li>
-    </br>
+        {% for item in date %}
+            <li>id : {{ item.id }}</li>
+            <li>title : {{ item.title }}</li>
+            <li>description: {{ item.description }}</li>
+            <li>create_at: {{ item.create_at }}</li>
+            <br>
         {% endfor %}
     </ul>
-     {%else%}
-       <h1> No data found</h1>
-
+    {% else %}
+        <h2>No data found</h2>
     {% endif %}
-    
+<!--Specifies a variable to use in the block-->
+    {% with firstname="Stalikken" %}
+        <h1>Hello {{ firstname }}</h1>
+    {% endwith %}
+<!--Specifies contents that should not be rendered by the template engine-->
+    {% verbatim %}
+        {% for x in fruits %}
+            <p>{{ x }}</p>
+        {% endfor %}
+    {% endverbatim %}
+<!--Outputs a specified template tag-->
+    <h1>
+      {% templatetag openblock %}
+        extends
+      {% templatetag closeblock %}
+    </h1>
+<!--Removes whitespace between HTML tags-->
+    {% spaceless %}
+       <ul>
+      {% for x in fruits %}
+         <li>{{ x }}</li>
+      {% endfor %}
+       </ul>
+    {% endspaceless %}
+<!--Used in cycles. Resets the cycle-->  
+    <ul>
+  {% for x in fruits %}
+    <li style='color:{% cycle 'red' 'green' 'blue' 'pink' %}'>
+      {{ x }}
+    </li>
+    {% if x == "Banana" %}
+      {% resetcycle %}
+    {% endif %}
+  {% endfor %}
+</ul>
+<!--Sorts an object by a group-->
+{% regroup cars by brand as newlist %}
+
+{% for x in newlist %}
+  <h1>{{ x.grouper }}</h1>
+  {% for y in x.list %}
+    <p>{{ y.model }}: {{ y.year }}</p>
+  {% endfor %}
+{% endfor %}
+<!--Outputs the current date/time-->
+<h1>{% now "Y-m-d" %}</h1>
+<!--Outputs random text-->
+{% lorem 50 w %}
+
 </body>
 </html>
