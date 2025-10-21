@@ -6,12 +6,21 @@
 <title>{{ html_title }}</title>
 </head>
 <body>
-<<<<<<< HEAD
     <h1>{{ html_title }}</h1>
-    
-    {% if date %}
+     
+{% if messages %}
+
+{% for message in messages %}
+
+   <p>{{message}}</p>
+
+{% endfor %}
+
+{% endif %}
+   
+    {% if data %}
     <ul>
-        {% for item in date %}
+        {% for item in data %}
             <li>id : {{ item.id }}</li>
             <li>title : {{ item.title }}</li>
             <li>description: {{ item.description }}</li>
@@ -21,70 +30,7 @@
     </ul>
     {% else %}
         <h2>No data found</h2>
-=======
-    <h1>{{html_title}}</h1>
-    {% if data %}
-    <ul>
-        {% for items in data %}
-             <li>id : {{items.id}}</li>
-             <li>title : {{items.title}}</li>
-             <li>describtion:{{items.describtion}}</li>
-    </br>
-        {% endfor %}
-    </ul>
-     {% else %}
-       <h1> No data found </h1>
-
->>>>>>> e04c224e6da6ff2fe8b263b1c503f2d42e878f03
     {% endif %}
-<!--Specifies a variable to use in the block-->
-    {% with firstname="Stalikken" %}
-        <h1>Hello {{ firstname }}</h1>
-    {% endwith %}
-<!--Specifies contents that should not be rendered by the template engine-->
-    {% verbatim %}
-        {% for x in fruits %}
-            <p>{{ x }}</p>
-        {% endfor %}
-    {% endverbatim %}
-<!--Outputs a specified template tag-->
-    <h1>
-      {% templatetag openblock %}
-        extends
-      {% templatetag closeblock %}
-    </h1>
-<!--Removes whitespace between HTML tags-->
-    {% spaceless %}
-       <ul>
-      {% for x in fruits %}
-         <li>{{ x }}</li>
-      {% endfor %}
-       </ul>
-    {% endspaceless %}
-<!--Used in cycles. Resets the cycle-->  
-    <ul>
-  {% for x in fruits %}
-    <li style='color:{% cycle 'red' 'green' 'blue' 'pink' %}'>
-      {{ x }}
-    </li>
-    {% if x == "Banana" %}
-      {% resetcycle %}
-    {% endif %}
-  {% endfor %}
-</ul>
-<!--Sorts an object by a group-->
-{% regroup cars by brand as newlist %}
-
-{% for x in newlist %}
-  <h1>{{ x.grouper }}</h1>
-  {% for y in x.list %}
-    <p>{{ y.model }}: {{ y.year }}</p>
-  {% endfor %}
-{% endfor %}
-<!--Outputs the current date/time-->
-<h1>{% now "Y-m-d" %}</h1>
-<!--Outputs random text-->
-{% lorem 50 w %}
 
 </body>
 </html>

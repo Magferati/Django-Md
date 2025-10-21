@@ -8,14 +8,20 @@
 </head>
 <body>
     <h1>edit items</h1>
+    {% if messages %}
+
+{% for message in messages %}
+
+   <p>{{message}}</p>
+
+{% endfor %}
+
+{% endif %}
+
     <form action ="{% url 'update' id %}" method="post">
         {% csrf_token %}
 
-        <label  for ="title">title</label></br>
-        <input type="text" vatue="{{title}}" id="title" name="title"></br>
-     </br>
-        <label  for ="description">description</label></br>
-        <textarea name="description" id="description">{{description}}</textarea></br>
+       {{form.as_p}}
         </br>
         <button type="submit">submit</button>
     </form>

@@ -1,11 +1,9 @@
-<<<<<<< HEAD
 from django.shortcuts import render,redirect
-=======
-from django.shortcuts import render , redirect
->>>>>>> e04c224e6da6ff2fe8b263b1c503f2d42e878f03
 from django.http import HttpResponse
 from .models import Daisy
 # Create your views here.
+from django.contrib import messages
+from .form import DaisyForm
 
 def flower1(request):
     return render(request, "flower.html")
@@ -13,12 +11,8 @@ def flower1(request):
 def get_all(request):
     print('request', request)
     
-<<<<<<< HEAD
-    flower_list = Daisy.objects.all().order_by("create_at")
-    print(f"-------**{flower_list}------**")
-=======
-    flower_list = Daisy.objects.all().order_by("-title")
->>>>>>> e04c224e6da6ff2fe8b263b1c503f2d42e878f03
+    flower_list = Daisy.objects.all().order_by("-create_at")
+    #print(f"-------**{flower_list}------**")
     if flower_list:
         context = {
             "data": flower_list,
@@ -43,66 +37,76 @@ def get_data_by_id(request, id):
 def create (request):
    
    if request.method == "POST":
-   
-        title = request.POST.get("title")
-<<<<<<< HEAD
-        des = request.POST.get("description")
+        form = DaisyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "update successfully.")
+            return redirect("add-items")
+        
+        messages.error(request, "error adding items")
+        return redirect("add-items")
 
-        print(title, des)
-        data = Daisy(title=title, description=des)
-        data.save()
-        print("data is save successfully")
+        #title = request.POST.get("title")
+        #des = request.POST.get("description")
+
+        #print(title, des)
+        #data = Daisy(title=title, description=des)
+        #data.save()
+        #print("data is save successfully")
         #Daisy.objects.create(title=title,describtion=describtion)
-        return redirect("get-all")
-   return render (request, "add_items.html")
+   else:
+    form = DaisyForm()
+    context = {
+            "form": form
+        }
+    return render (request, "add_items.html",context)
 
 
 def update(request, id):
-    daisy = Daisy.objects.get(id=id)
-    if request.method == "POST":
-        title = request.POST.get("title")
-        des = request.POST.get("description")
+    
+    try:
+      daisy = Daisy.objects.get(id=id)
+    except Exception as e:
+        print(e)
+        return HttpResponse(f"{id} {e}")
+      
+    if request.method =="POST":
+        
+        form = DaisyForm(request.POST, instance=daisy)
+        
+        if form.is_valid():
+            form.save()
+            
+            messages.success(request, "Items sucessfully updated")
+            
+            return redirect("update", id=daisy.id)
+        
+        messages.error("error updating items")
+        return redirect("update", id=daisy.id)
+   
 
-        daisy.title = title
-        daisy.description = des
-        daisy.save()
-        return redirect("get-all")
+    form = DaisyForm(instance=daisy)
+    
     context = {
-        "id" : daisy.id,
-        "title": daisy.title,
-        "description":daisy.description
+    "id": daisy.id,
+    "form": form
     }
 
     return render(request, "edit_items.html", context)
-
-
-def delete(request, id):   
-=======
-        describtion = request.POST.get("describtion")
-
-        print(title, describtion)
-        data =Daisy(title=title, describtion=describtion)
-        data.save()
-        print("data is save successfully")
-        #Daisy.objects.create(title=title,describtion=describtion)
-        return redirect("get-all")
-   return render (request, "add_item.html")
-   
-
-def update(request, id, title, describtion):
+        
     
-    daisy= Daisy.objects.ger(id=id)
 
-    daisy.title = title
-    daisy.discribtion = describtion
-    daisy.save()
-
-    return HttpResponse(f"{daisy.title} and {daisy.discribtion} updated")
 
 def delete(request, id):
->>>>>>> e04c224e6da6ff2fe8b263b1c503f2d42e878f03
-    a = Daisy.objects.get(id=id)
-    a.delete()
-    return HttpResponse(f"{id} was delete successfully")
+      
+    try:
+      daisy = Daisy.objects.get(id=id)
+    except Exception as e:
+        print(e)
+        return HttpResponse(f"{id} {e}")
+    
+    daisy.delete()
+    messages.success(request, f"{id} delete successfully")
+    return redirect("get-all")
 #def home(request):
    # return render(request, "Hello, I'm Aru. I love flowers much more.")
