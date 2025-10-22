@@ -34,32 +34,26 @@ def get_data_by_id(request, id):
         }
         return render(request, "show_item.html", context)
     
-def create (request):
-   
-   if request.method == "POST":
+def create(request):
+    
+    if request.method == "POST":
+        print("request",request.FILES)
         form = DaisyForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, "update successfully.")
+            messages.success(request, "Add Items successfully")
             return redirect("add-items")
         
         messages.error(request, "error adding items")
         return redirect("add-items")
-
-        #title = request.POST.get("title")
-        #des = request.POST.get("description")
-
-        #print(title, des)
-        #data = Daisy(title=title, description=des)
-        #data.save()
-        #print("data is save successfully")
-        #Daisy.objects.create(title=title,describtion=describtion)
-   else:
-    form = DaisyForm()
-    context = {
+    else:
+        
+        form = DaisyForm()
+        context = {
             "form": form
         }
-    return render (request, "add_items.html",context)
+    
+        return render(request, "add_items.html", context)
 
 
 def update(request, id):
