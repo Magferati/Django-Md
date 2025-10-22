@@ -12,16 +12,17 @@
     {% if message %}
 
     {% for message in messages %}
-        <p>{{message}}</p>
+        <p>{{messages}}</p>
     
     {% endfor %}
     {% endif %}
 
 
-    <form action ="{% url 'add-items' %}" method="post">
+    <form action ="{% url 'add-items' %}" enctype="multipart/form-data" method="post">
         {% csrf_token %}
 
-        {{form.as_p}}<br>
+        {{form.as_p}}
+        <br>
         <button type="submit">submit</button>
     </form>
 </body>

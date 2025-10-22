@@ -6,6 +6,7 @@ from django.utils import timezone
 class Daisy(models.Model):
     title = models.CharField(max_length=100,blank=True,null=True)
     description = models.TextField(blank=True,null=True)
+    image = models.ImageField(upload_to="image", blank=True,null=True)
     create_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

@@ -37,7 +37,7 @@ def get_data_by_id(request, id):
 def create (request):
    
    if request.method == "POST":
-        form = DaisyForm(request.POST)
+        form = DaisyForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, "update successfully.")
